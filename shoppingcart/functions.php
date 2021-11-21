@@ -34,6 +34,7 @@ echo <<<EOT
                 <nav>
                     <a href="index.php">Inicio</a>
                     <a href="index.php?page=products">Articulos</a>
+                    <a href="report.php">Pedidos</a>
                 </nav>
                 <div class="link-icons">
                     <a href="index.php?page=cart">
@@ -52,7 +53,8 @@ echo <<<EOT
         </main>
         <footer>
             <div class="content-wrapper">
-                <p>&copy; $year, Doña Irma Tortilleria</p>
+            <p>&copy; $year, Doña Irma Tortilleria</p>
+             
             </div>
         </footer>
         <script src="script.js"></script>

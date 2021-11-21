@@ -19,8 +19,8 @@ $total_products = $pdo->query('SELECT * FROM articulos')->rowCount();
 <?=template_header('Products')?>
 
 <div class="products content-wrapper">
-    <h1>Products</h1>
-    <p><?=$total_products?> Products</p>
+    <h1>Articulos</h1>
+    <p><?=$total_products?> Articulos</p>
     <div class="products-wrapper">
         <?php foreach ($products as $product): ?>
         <a href="index.php?page=product&id=<?=$product['idArticulo']?>" class="product">
@@ -34,10 +34,10 @@ $total_products = $pdo->query('SELECT * FROM articulos')->rowCount();
     </div>
     <div class="buttons">
         <?php if ($current_page > 1): ?>
-        <a href="index.php?page=products&p=<?=$current_page-1?>">Prev</a>
+        <a href="index.php?page=products&p=<?=$current_page-1?>">Anterior</a>
         <?php endif; ?>
         <?php if ($total_products > ($current_page * $num_products_on_each_page) - $num_products_on_each_page + count($products)): ?>
-        <a href="index.php?page=products&p=<?=$current_page+1?>">Next</a>
+        <a href="index.php?page=products&p=<?=$current_page+1?>">Siguiente</a>
         <?php endif; ?>
     </div>
 </div>

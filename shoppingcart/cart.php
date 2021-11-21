@@ -57,6 +57,16 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
 
 // Send the user to the place order page if they click the Place Order button, also the cart should not be empty
 if (isset($_POST['placeorder']) && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    
+
+    $nombre= $_POST['name'];
+    $descripcion= $_POST['articulo']; 
+    $importe = $_POST['importe'];
+    $direccion= $_POST['dir'];
+    $stmt = $pdo->prepare('INSERT INTO pedidos (nombreCliente , descripcion, importePedido, direccionPedido ) VALUES (? ,? ,? ,?)');
+    $stmt->execute([$nombre, $descripcion, $importe, $direccion]);
+    
+    
     header('Location: index.php?page=placeorder');
     exit;
 }
@@ -93,7 +103,7 @@ if ($products_in_cart) {
                     <td colspan="2">Articulo</td>
                     <td>Precio</td>
                     <td>Cantidad</td>
-                    <td>Total</td>
+                    <td>Subotal</td>
                 </tr>
             </thead>
             <tbody>
@@ -102,37 +112,68 @@ if ($products_in_cart) {
                     <td colspan="5" style="text-align:center;">No hay productos en el carrito.</td>
                 </tr>
                 <?php else: ?>
+                    <?php  $articulos ='';?>
                 <?php foreach ($products as $product): ?>
-                <tr>
-                    <td class="img">
-                        <a href="index.php?page=product&id=<?=$product['idArticulo']?>">
-                            <img src="/imgs/<?=$product['imagenArticulo']?>" width="50" height="50" alt="<?=$product['nombreArticulo']?>">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="index.php?page=product&id=<?=$product['idArticulo']?>"><?=$product['nombreArticulo']?></a>
-                        <br>
-                        <a href="index.php?page=cart&remove=<?=$product['idArticulo']?>" class="remove">Eliminar</a>
-                    </td>
-                    <td class="price">&dollar;<?=$product['precioArticulo']?></td>
-                    <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['idArticulo']?>" value="<?=$products_in_cart[$product['idArticulo']]?>" min="1" max="<?=$product['cantidadArticulo']?>" placeholder="Quantity" required>
-                    </td>
-                    <td class="price">&dollar;<?=$product['precioArticulo'] * $products_in_cart[$product['idArticulo']]?></td>
-                </tr>
+                    
+                    <tr>
+                        <td class="img">
+                            <a href="index.php?page=product&id=<?=$product['idArticulo']?>">
+                                <img src="/imgs/<?=$product['imagenArticulo']?>" width="50" height="50" alt="<?=$product['nombreArticulo']?>">
+                            </a>
+                        </td>
+                        <td>
+                            <a class='articulo'  href="index.php?page=product&id=<?=$product['idArticulo']?>"><?=$product['nombreArticulo']?></a>
+                            <br>
+                            <a href="index.php?page=cart&remove=<?=$product['idArticulo']?>" class="remove">Eliminar</a>
+                        </td>
+                        <td class="price">&dollar;<?=$product['precioArticulo']?></td>
+                        <td class="quantity">
+                            <input type="number" name="quantity-<?=$product['idArticulo']?>" value="<?=$products_in_cart[$product['idArticulo']]?>" min="1" max="<?=$product['cantidadArticulo']?>" placeholder="Quantity" required>
+                        </td>
+                        <td class="price">&dollar;<?=$product['precioArticulo'] * $products_in_cart[$product['idArticulo']]?></td>
+                    </tr>
+                 <?php  $articulos= $articulos.$product['nombreArticulo'].' || Cantidad= '.$products_in_cart[$product['idArticulo']].' ||'?> 
                 <?php endforeach; ?>
+                <input type='hidden' name='articulo' id='articulo'  value ='<?=$articulos?>'> </input>
                 <?php endif; ?>
             </tbody>
         </table>
         <div class="subtotal">
-            <span class="text">Subtotal</span>
-            <span class="price">&dollar;<?=$subtotal?></span>
+            <span class="text">Total</span>
+            <span class="price" id='imp' name='imp'>&dollar;<?=$subtotal?></span>
         </div>
         <div class="buttons">
             <input type="submit" value="Actualizar" name="update">
-            <input type="submit" value="Ordenar" name="placeorder">
+            <input type="submit" value="Ordenar" name="placeorder" >
+            
         </div>
+        <p>Datos de Envio</p>
+        <label for="name">Nombre :  </label>
+        <input type="text" id="name" name="name" required minlength="4" maxlength="20" size="30">
+        <br><br>
+        <label for="surname">Apellidos:  </label>
+        <input type="text" id="surname" name="surname" required minlength="4" maxlength="50" size="30">  
+        <br><br>        
+        <label for="dir">Direccion:  </label>
+        <input type="text" id="dir" name="dir" required minlength="4" maxlength="100" size="50">
+        <br><br>
+        <div>
+            <label for="name">Metodo de pago:  </label>
+            <select name="select">
+                <option value="value1">Tarjeta Debito/Credito</option>
+                <option value="value2" selected>Paypal</option>
+                <option value="value3">Efectivo</option>
+            </select>
+            
+            <input type='hidden' id='importe' name = 'importe' value ='<?=$subtotal?>'> </input>
     </form>
 </div>
 
 <?=template_footer()?>
+
+<?php 
+    function addorder(){
+
+     
+    }
+?>   

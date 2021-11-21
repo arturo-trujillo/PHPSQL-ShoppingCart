@@ -11,4 +11,4 @@ include $page . '.php';
 ?>
 
 
-// https://codeshack.io/shopping-cart-system-php-mysql/
+<!-- https://codeshack.io/shopping-cart-system-php-mysql/ -->
